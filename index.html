@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Information Management System</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#f0f4ff,#e8eeff,#f0f0ff);min-height:100vh;color:#1f2937;line-height:1.6}
+
+/* Navbar */
+.navbar{background:rgba(255,255,255,.95);border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
+.nav-c{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-b{display:flex;align-items:center;gap:.75rem;cursor:pointer}
+.nav-i{font-size:1.5rem;background:linear-gradient(135deg,#3b82f6,#2563eb);padding:.5rem;border-radius:10px}
+.nav-b h1{font-size:1.1rem;font-weight:700;color:#111827}
+.nav-b p{font-size:.65rem;color:#6b7280;margin-top:-2px}
+.nav-l{display:flex;list-style:none;gap:.5rem}
+.nav-a{text-decoration:none;color:#4b5563;padding:.5rem 1rem;border-radius:8px;font-size:.875rem;font-weight:500;transition:.2s;cursor:pointer}
+.nav-a:hover{background:#eff6ff;color:#3b82f6}
+.nav-a.active{background:#3b82f6;color:#fff}
+.mob{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer}
+@media(max-width:768px){
+  .nav-l{display:none;position:absolute;top:64px;left:0;right:0;background:#fff;flex-direction:column;padding:1rem;border-bottom:1px solid #e5e7eb}
+  .nav-l.active{display:flex}
+  .mob{display:block}
+  .hero h1{font-size:1.75rem!important}
+  .fmg{grid-template-columns:1fr!important}
+}
+
+/* Main */
+.mc{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
+.page{display:none;animation:fi .3s ease}
+.page.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,#3b82f6,#2563eb);border-radius:16px;padding:3rem 2rem;color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:rgba(255,255,255,.1);border-radius:50%}
+.hero-c{position:relative;z-index:1;max-width:600px}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.15);padding:.375rem .75rem;border-radius:20px;font-size:.75rem;margin-bottom:1rem}
+.hero h1{font-size:2.5rem;font-weight:800;line-height:1.2;margin-bottom:1rem}
+.hero>div>p{font-size:1rem;opacity:.9;margin-bottom:1.5rem}
+.hero-btns{display:flex;gap:.75rem;flex-wrap:wrap}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;border-radius:10px;font-size:.875rem;font-weight:600;cursor:pointer;transition:.2s;border:none}
+.btn-p{background:#3b82f6;color:#fff}.btn-p:hover{background:#2563eb;transform:translateY(-2px)}
+.btn-w2{background:#fff;color:#2563eb}.btn-w2:hover{background:#eff6ff;transform:translateY(-2px)}
+.btn-s{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)}.btn-s:hover{background:rgba(255,255,255,.25)}
+.btn-o{background:#fff;color:#4b5563;border:1px solid #e5e7eb}.btn-o:hover{background:#f9fafb}
+.btn-w{background:#f59e0b;color:#fff}.btn-w:hover{background:#d97706}
+.btn-d{background:#ef4444;color:#fff}.btn-d:hover{background:#dc2626}
+.btn-ic{background:none;border:none;padding:.5rem;color:#6b7280;cursor:pointer;font-size:1rem}
+
+/* Stats */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+.sc{background:#fff;border-radius:12px;padding:1.25rem;display:flex;align-items:center;gap:1rem;border:1px solid #f3f4f6;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.si{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.si.bl{background:#eff6ff}.si.gr{background:#f0fdf4}
+.sn{display:block;font-size:1.5rem;font-weight:700;color:#111827}
+.sl{font-size:.875rem;color:#6b7280}
+
+/* Features */
+.fs{margin-top:3rem;text-align:center}
+.fs h2{font-size:1.5rem;margin-bottom:.5rem}
+.fs .sub{color:#6b7280;margin-bottom:1.5rem}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.fc{background:#fff;border-radius:12px;padding:1.5rem;text-align:left;border:1px solid #f3f4f6;cursor:pointer;transition:.2s}
+.fc:hover{transform:translateY(-4px);box-shadow:0 10px 20px rgba(0,0,0,.1)}
+.fci{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:1rem}
+.fci.bl{background:#eff6ff}.fci.gr{background:#f0fdf4}.fci.am{background:#fffbeb}.fci.re{background:#fef2f2}
+.fc h3{font-size:1rem;margin-bottom:.25rem}
+.fc p{font-size:.875rem;color:#6b7280}
+
+/* Tech */
+.ts{margin-top:3rem;background:#fff;border-radius:16px;padding:2rem;border:1px solid #f3f4f6;text-align:center}
+.ts h2{margin-bottom:1.5rem}
+.tg{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap}
+.ti{display:flex;align-items:center;gap:.5rem;padding:.75rem 1.25rem;background:#f9fafb;border-radius:8px;font-size:.875rem;font-weight:500}
+
+/* Page Header */
+.ph{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+.pi{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.pi.bl{background:#eff6ff}.pi.am{background:#fffbeb}
+.ph h2{font-size:1.5rem}.ph p{color:#6b7280;font-size:.875rem}
+.ph .btn{margin-left:auto}
+
+/* Forms */
+.fmc{background:#fff;border-radius:16px;padding:2rem;border:1px solid #f3f4f6}
+.fmg{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.fmgr{margin-bottom:1rem}.fmgr.fw{grid-column:1/-1}
+.fmgr label{display:block;font-size:.875rem;font-weight:600;color:#374151;margin-bottom:.5rem}
+.fmgr input,.fmgr select{width:100%;padding:.75rem 1rem;border:1px solid #e5e7eb;border-radius:10px;font-size:.875rem;background:#f9fafb;transition:.2s}
+.fmgr input:focus,.fmgr select:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.1);background:#fff}
+.fma{display:flex;justify-content:flex-end;gap:.75rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #f3f4f6}
+
+/* Search */
+.sb{background:#fff;border-radius:12px;padding:.75rem 1rem;display:flex;align-items:center;gap:.75rem;border:1px solid #f3f4f6;margin-bottom:1.5rem}
+.sb input{flex:1;border:none;outline:none;font-size:.875rem;background:none}
+.cs{background:none;border:none;color:#9ca3af;cursor:pointer;padding:.25rem}
+
+/* Table */
+.tc{background:#fff;border-radius:16px;border:1px solid #f3f4f6;overflow:hidden}
+.st{width:100%;border-collapse:collapse}
+.st th{background:#f9fafb;padding:.875rem 1rem;text-align:left;font-size:.75rem;font-weight:600;color:#6b7280;text-transform:uppercase}
+.st td{padding:1rem;border-top:1px solid #f3f4f6;font-size:.875rem}
+.st tr:hover{background:#eff6ff}
+.sid{background:#eff6ff;color:#3b82f6;padding:.25rem .5rem;border-radius:6px;font-family:monospace;font-weight:600}
+.snc{display:flex;align-items:center;gap:.75rem}
+.sav{width:32px;height:32px;background:linear-gradient(135deg,#3b82f6,#2563eb);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;font-weight:600;flex-shrink:0}
+.yb{padding:.25rem .625rem;border-radius:20px;font-size:.75rem;font-weight:500}
+.y1{background:#dbeafe;color:#1d4ed8}.y2{background:#dcfce7;color:#16a34a}.y3{background:#fef3c7;color:#d97706}.y4{background:#f3e8ff;color:#9333ea}
+.ab{display:flex;gap:.25rem}
+.abtn{padding:.5rem;border:none;background:none;border-radius:8px;cursor:pointer;transition:.2s;font-size:.9rem}
+.abtn:hover{background:#f3f4f6}
+.abtn.ed:hover{background:#fffbeb}.abtn.de:hover{background:#fef2f2}
+
+/* Empty */
+.es{text-align:center;padding:4rem 2rem;background:#fff;border-radius:16px;border:1px solid #f3f4f6}
+.es .ei{font-size:3rem;margin-bottom:1rem;opacity:.5}
+.es h3{font-size:1.125rem;margin-bottom:.5rem}
+.es p{color:#6b7280;margin-bottom:1.5rem}
+.hidden{display:none!important}
+
+/* Toast */
+.toast{position:fixed;top:80px;right:20px;background:#fff;padding:1rem 1.5rem;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.15);display:flex;align-items:center;gap:.75rem;z-index:1000;animation:tsi .3s ease;border-left:4px solid #3b82f6;font-size:.875rem}
+.toast.success{border-left-color:#22c55e}.toast.error{border-left-color:#ef4444}
+@keyframes tsi{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.modal-c{background:#fff;border-radius:16px;padding:2rem;max-width:400px;width:100%;text-align:center;animation:sci .2s ease}
+@keyframes sci{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-c .mi{font-size:3rem;margin-bottom:1rem}
+.modal-c h3{font-size:1.25rem;margin-bottom:.5rem}
+.modal-c p{color:#6b7280;font-size:.875rem;margin-bottom:1.5rem}
+.modal-a{display:flex;justify-content:center;gap:.75rem}
+
+/* Footer */
+.footer{text-align:center;padding:2rem;margin-top:3rem;border-top:1px solid #e5e7eb}
+.footer p{font-size:.875rem;color:#6b7280}
+.footer p:last-child{font-size:.75rem;margin-top:.25rem}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="nav-c">
+    <div class="nav-b" onclick="navigateTo('home')">
+      <span class="nav-i">🎓</span>
+      <div><h1>SIMS</h1><p>Student Information Management</p></div>
+    </div>
+    <ul class="nav-l" id="nav-links">
+      <li><a class="nav-a active" data-page="home" onclick="navigateTo('home')">Home</a></li>
+      <li><a class="nav-a" data-page="register" onclick="navigateTo('register')">Register</a></li>
+      <li><a class="nav-a" data-page="students" onclick="navigateTo('students')">Students</a></li>
+    </ul>
+    <button class="mob" onclick="document.getElementById('nav-links').classList.toggle('active')">☰</button>
+  </div>
+</nav>
+
+<main class="mc">
+
+  <!-- HOME PAGE -->
+  <section id="home-page" class="page active">
+    <div class="hero">
+      <div class="hero-c">
+        <span class="hero-badge">⚡ Student Information Management System</span>
+        <h1>Manage Student Records</h1>
+        <p>A comprehensive CRUD application built with Node.js, HTML, and CSS. Register, view, update, and delete student records with ease.</p>
+        <div class="hero-btns">
+          <button class="btn btn-w2" onclick="navigateTo('register')">➕ Register Student</button>
+          <button class="btn btn-s" onclick="navigateTo('students')">👥 View All Students</button>
+        </div>
+      </div>
+    </div>
+    <div class="sg">
+      <div class="sc"><div class="si bl">👥</div><div><span class="sn" id="total-students">0</span><span class="sl">Total Students</span></div></div>
+      <div class="sc"><div class="si gr">📊</div><div><span class="sn">4</span><span class="sl">CRUD Operations</span></div></div>
+    </div>
+    <div class="fs">
+      <h2>System Features</h2>
+      <p class="sub">Complete CRUD operations for student records management</p>
+      <div class="fg">
+        <div class="fc" onclick="navigateTo('register')"><div class="fci bl">➕</div><h3>Create</h3><p>Register new students with complete information</p></div>
+        <div class="fc" onclick="navigateTo('students')"><div class="fci gr">📖</div><h3>Read</h3><p>View all student records in an organized table</p></div>
+        <div class="fc" onclick="navigateTo('students')"><div class="fci am">✏️</div><h3>Update</h3><p>Edit and modify existing student information</p></div>
+        <div class="fc" onclick="navigateTo('students')"><div class="fci re">🗑️</div><h3>Delete</h3><p>Remove student records with confirmation</p></div>
+      </div>
+    </div>
+    <div class="ts">
+      <h2>Technology Stack</h2>
+      <div class="tg">
+        <div class="ti"><span>🟢</span> Node.js</div>
+        <div class="ti"><span>📄</span> HTML</div>
+        <div class="ti"><span>🎨</span> CSS</div>
+      </div>
+    </div>
+    <footer class="footer">
+      <p>Student Information Management System</p>
+      <p>Built with Node.js · HTML · CSS</p>
+    </footer>
+  </section>
+
+  <!-- REGISTER PAGE -->
+  <section id="register-page" class="page">
+    <div class="ph">
+      <div class="pi bl">➕</div>
+      <div><h2>Student Registration</h2><p>Fill in the details to register a new student</p></div>
+    </div>
+    <form id="register-form" class="fmc" onsubmit="handleRegister(event)">
+      <div class="fmg">
+        <div class="fmgr"><label>Student ID</label><input type="text" id="reg-sid" placeholder="e.g., 2024-0001" required></div>
+        <div class="fmgr"><label>Full Name</label><input type="text" id="reg-name" placeholder="e.g., Juan Dela Cruz" required></div>
+        <div class="fmgr"><label>Course</label>
+          <select id="reg-course" required>
+            <option value="">Select a course</option>
+            <option>BS Computer Science</option>
+            <option>BS Information Technology</option>
+            <option>BS Information Systems</option>
+            <option>BS Computer Engineering</option>
+            <option>BS Data Science</option>
+          </select>
+        </div>
+        <div class="fmgr"><label>Year Level</label>
+          <select id="reg-year" required>
+            <option value="1">1st Year</option>
+            <option value="2">2nd Year</option>
+            <option value="3">3rd Year</option>
+            <option value="4">4th Year</option>
+          </select>
+        </div>
+      </div>
+      <div class="fmgr fw"><label>Email Address</label><input type="email" id="reg-email" placeholder="e.g., juan@university.edu" required></div>
+      <div class="fma">
+        <button type="button" class="btn btn-o" onclick="document.getElementById('register-form').reset()">🔄 Reset</button>
+        <button type="submit" class="btn btn-p">💾 Register Student</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- STUDENTS LIST PAGE -->
+  <section id="students-page" class="page">
+    <div class="ph">
+      <div class="pi bl">👥</div>
+      <div><h2>Student Records</h2><p><span id="student-count">0</span> students found</p></div>
+      <button class="btn btn-p" onclick="navigateTo('register')">➕ Add Student</button>
+    </div>
+    <div class="sb">
+      <span>🔍</span>
+      <input type="text" id="search-input" placeholder="Search by ID, name, course, or email..." oninput="doSearch()">
+      <button class="cs" onclick="document.getElementById('search-input').value='';doSearch()">✕</button>
+    </div>
+    <div class="tc" id="table-wrap">
+      <table class="st">
+        <thead><tr><th>Student ID</th><th>Full Name</th><th>Course</th><th>Year</th><th>Email</th><th>Actions</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div id="empty" class="es hidden">
+      <div class="ei">👥</div>
+      <h3>No students found</h3>
+      <p>Get started by registering your first student.</p>
+      <button class="btn btn-p" onclick="navigateTo('register')">➕ Register Student</button>
+    </div>
+  </section>
+
+  <!-- EDIT PAGE -->
+  <section id="edit-page" class="page">
+    <div class="ph">
+      <button class="btn-ic" onclick="navigateTo('students')">← Back</button>
+      <div class="pi am">✏️</div>
+      <div><h2>Edit Student</h2><p>Update the student information below</p></div>
+    </div>
+    <form id="edit-form" class="fmc" onsubmit="handleUpdate(event)">
+      <input type="hidden" id="edit-id">
+      <div class="fmg">
+        <div class="fmgr"><label>Student ID</label><input type="text" id="edit-sid" required></div>
+        <div class="fmgr"><label>Full Name</label><input type="text" id="edit-name" required></div>
+        <div class="fmgr"><label>Course</label>
+          <select id="edit-course" required>
+            <option value="">Select a course</option>
+            <option>BS Computer Science</option>
+            <option>BS Information Technology</option>
+            <option>BS Information Systems</option>
+            <option>BS Computer Engineering</option>
+            <option>BS Data Science</option>
+          </select>
+        </div>
+        <div class="fmgr"><label>Year Level</label>
+          <select id="edit-year" required>
+            <option value="1">1st Year</option>
+            <option value="2">2nd Year</option>
+            <option value="3">3rd Year</option>
+            <option value="4">4th Year</option>
+          </select>
+        </div>
+      </div>
+      <div class="fmgr fw"><label>Email Address</label><input type="email" id="edit-email" required></div>
+      <div class="fma">
+        <button type="button" class="btn btn-o" onclick="navigateTo('students')">Cancel</button>
+        <button type="submit" class="btn btn-w">💾 Update Student</button>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden"><span id="toast-icon"></span><span id="toast-msg"></span></div>
+
+<!-- Delete Modal -->
+<div id="del-modal" class="modal hidden">
+  <div class="modal-c">
+    <div class="mi">⚠️</div>
+    <h3>Delete Student</h3>
+    <p>Are you sure you want to permanently delete this student record? This action cannot be undone.</p>
+    <div class="modal-a">
+      <button class="btn btn-o" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-d" id="confirm-del">🗑️ Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="root"></div>
+<script type="module" src="/src/main.js"></script>
+
+<script>
+var students = [
+  {id:1, student_id:'2024-0001', full_name:'Juan Dela Cruz', course:'BS Computer Science', year_level:3, email:'juan.delacruz@university.edu'},
+  {id:2, student_id:'2024-0002', full_name:'Maria Santos', course:'BS Information Technology', year_level:2, email:'maria.santos@university.edu'},
+  {id:3, student_id:'2024-0003', full_name:'Carlos Reyes', course:'BS Information Systems', year_level:4, email:'carlos.reyes@university.edu'},
+  {id:4, student_id:'2024-0004', full_name:'Angela Garcia', course:'BS Computer Engineering', year_level:1, email:'angela.garcia@university.edu'},
+  {id:5, student_id:'2024-0005', full_name:'Marco Villanueva', course:'BS Data Science', year_level:2, email:'marco.villanueva@university.edu'}
+];
+var nextId = 6;
+var delId = null;
+
+render();
+updateCount();
+
+function navigateTo(page) {
+  document.querySelectorAll('.nav-a').forEach(function(a) {
+    a.classList.remove('active');
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById(page + '-page').classList.add('active');
+  document.getElementById('nav-links').classList.remove('active');
+  if (page === 'students') render();
+}
+
+function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+function yl(y) { return {1:'1st Year',2:'2nd Year',3:'3rd Year',4:'4th Year'}[y] || y+'th Year'; }
+
+function render() {
+  var q = document.getElementById('search-input') ? document.getElementById('search-input').value.toLowerCase().trim() : '';
+  var list = students;
+  if (q) {
+    list = students.filter(function(s) {
+      return s.student_id.toLowerCase().indexOf(q) !== -1 ||
+             s.full_name.toLowerCase().indexOf(q) !== -1 ||
+             s.course.toLowerCase().indexOf(q) !== -1 ||
+             s.email.toLowerCase().indexOf(q) !== -1 ||
+             String(s.year_level).indexOf(q) !== -1;
+    });
+  }
+  document.getElementById('student-count').textContent = list.length;
+  if (list.length === 0) {
+    document.getElementById('table-wrap').classList.add('hidden');
+    document.getElementById('empty').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('table-wrap').classList.remove('hidden');
+  document.getElementById('empty').classList.add('hidden');
+  var h = '';
+  for (var i = 0; i < list.length; i++) {
+    var s = list[i];
+    h += '<tr>';
+    h += '<td><span class="sid">' + esc(s.student_id) + '</span></td>';
+    h += '<td><div class="snc"><div class="sav">' + s.full_name.charAt(0).toUpperCase() + '</div>' + esc(s.full_name) + '</div></td>';
+    h += '<td>' + esc(s.course) + '</td>';
+    h += '<td><span class="yb y' + s.year_level + '">' + yl(s.year_level) + '</span></td>';
+    h += '<td>' + esc(s.email) + '</td>';
+    h += '<td><div class="ab"><button class="abtn ed" onclick="openEdit(' + s.id + ')">✏️</button><button class="abtn de" onclick="openDel(' + s.id + ')">🗑️</button></div></td>';
+    h += '</tr>';
+  }
+  document.getElementById('tbody').innerHTML = h;
+}
+
+function updateCount() { document.getElementById('total-students').textContent = students.length; }
+function doSearch() { render(); }
+
+function handleRegister(e) {
+  e.preventDefault();
+  var sid = document.getElementById('reg-sid').value.trim();
+  var name = document.getElementById('reg-name').value.trim();
+  var course = document.getElementById('reg-course').value;
+  var year = parseInt(document.getElementById('reg-year').value);
+  var email = document.getElementById('reg-email').value.trim();
+  for (var i = 0; i < students.length; i++) {
+    if (students[i].student_id === sid) { toast('error', 'Student ID already exists'); return; }
+    if (students[i].email.toLowerCase() === email.toLowerCase()) { toast('error', 'Email already exists'); return; }
+  }
+  students.push({id: nextId++, student_id: sid, full_name: name, course: course, year_level: year, email: email.toLowerCase()});
+  document.getElementById('register-form').reset();
+  updateCount();
+  toast('success', 'Student "' + name + '" registered successfully!');
+  navigateTo('students');
+}
+
+function openEdit(id) {
+  var s = null;
+  for (var i = 0; i < students.length; i++) { if (students[i].id === id) { s = students[i]; break; } }
+  if (!s) return;
+  document.getElementById('edit-id').value = s.id;
+  document.getElementById('edit-sid').value = s.student_id;
+  document.getElementById('edit-name').value = s.full_name;
+  document.getElementById('edit-course').value = s.course;
+  document.getElementById('edit-year').value = s.year_level;
+  document.getElementById('edit-email').value = s.email;
+  navigateTo('edit');
+}
+
+function handleUpdate(e) {
+  e.preventDefault();
+  var id = parseInt(document.getElementById('edit-id').value);
+  var sid = document.getElementById('edit-sid').value.trim();
+  var name = document.getElementById('edit-name').value.trim();
+  var course = document.getElementById('edit-course').value;
+  var year = parseInt(document.getElementById('edit-year').value);
+  var email = document.getElementById('edit-email').value.trim();
+  for (var i = 0; i < students.length; i++) {
+    if (students[i].id !== id) {
+      if (students[i].student_id === sid) { toast('error', 'Student ID already exists'); return; }
+      if (students[i].email.toLowerCase() === email.toLowerCase()) { toast('error', 'Email already exists'); return; }
+    }
+  }
+  for (var i = 0; i < students.length; i++) {
+    if (students[i].id === id) {
+      students[i].student_id = sid;
+      students[i].full_name = name;
+      students[i].course = course;
+      students[i].year_level = year;
+      students[i].email = email.toLowerCase();
+      break;
+    }
+  }
+  updateCount();
+  toast('success', 'Student "' + name + '" updated successfully!');
+  navigateTo('students');
+}
+
+function openDel(id) {
+  delId = id;
+  document.getElementById('del-modal').classList.remove('hidden');
+  document.getElementById('confirm-del').onclick = function() {
+    for (var i = 0; i < students.length; i++) {
+      if (students[i].id === id) {
+        var nm = students[i].full_name;
+        students.splice(i, 1);
+        toast('success', 'Student "' + nm + '" deleted successfully');
+        break;
+      }
+    }
+    closeModal();
+    updateCount();
+    render();
+  };
+}
+
+function closeModal() {
+  delId = null;
+  document.getElementById('del-modal').classList.add('hidden');
+}
+
+function toast(type, msg) {
+  var t = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = type === 'success' ? '✅' : '❌';
+  document.getElementById('toast-msg').textContent = msg;
+  t.className = 'toast ' + type;
+  t.classList.remove('hidden');
+  setTimeout(function() { t.classList.add('hidden'); }, 3500);
+}
+
+document.addEventListener('click', function(e) { if (e.target.id === 'del-modal') closeModal(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+</script>
+
+</body>
+</html>

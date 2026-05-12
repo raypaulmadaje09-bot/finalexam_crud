@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="nav-icon">🎓</span>
+                <div>
+                    <h1>SIMS</h1>
+                    <p>Student Information Management</p>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="register">Register</a></li>
+                <li><a href="#" class="nav-link" data-page="students">Students</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Home Page -->
+        <section id="home-page" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <span class="hero-badge">⚡ Student Information Management System</span>
+                    <h1>Manage Student Records <span>Effortlessly</span></h1>
+                    <p>A comprehensive CRUD application built with Node.js, HTML, and CSS. Register, view, update, and delete student records with ease.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="navigateTo('register')">
+                            ➕ Register Student
+                        </button>
+                        <button class="btn btn-secondary" onclick="navigateTo('students')">
+                            👥 View All Students
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">👥</div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="total-students">0</span>
+                        <span class="stat-label">Total Students</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">📊</div>
+                    <div class="stat-info">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">CRUD Operations</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple">☁️</div>
+                    <div class="stat-info">
+                        <span class="stat-number">Cloud</span>
+                        <span class="stat-label">Aiven Database</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <h2>System Features</h2>
+                <p class="features-subtitle">Complete CRUD operations for student records management</p>
+                <div class="features-grid">
+                    <div class="feature-card" onclick="navigateTo('register')">
+                        <div class="feature-icon blue">➕</div>
+                        <h3>Create</h3>
+                        <p>Register new students with complete information</p>
+                    </div>
+                    <div class="feature-card" onclick="navigateTo('students')">
+                        <div class="feature-icon green">📖</div>
+                        <h3>Read</h3>
+                        <p>View all student records in an organized table</p>
+                    </div>
+                    <div class="feature-card" onclick="navigateTo('students')">
+                        <div class="feature-icon amber">✏️</div>
+                        <h3>Update</h3>
+                        <p>Edit and modify existing student information</p>
+                    </div>
+                    <div class="feature-card" onclick="navigateTo('students')">
+                        <div class="feature-icon red">🗑️</div>
+                        <h3>Delete</h3>
+                        <p>Remove student records with confirmation</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-section">
+                <h2>Technology Stack</h2>
+                <div class="tech-grid">
+                    <div class="tech-item"><span>🟢</span> Node.js</div>
+                    <div class="tech-item"><span>📄</span> HTML</div>
+                    <div class="tech-item"><span>🎨</span> CSS</div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <p>Student Information Management System</p>
+                <p>Built with Node.js · HTML · CSS</p>
+            </footer>
+        </section>
+
+        <!-- Register Page -->
+        <section id="register-page" class="page">
+            <div class="page-header">
+                <div class="page-icon blue">➕</div>
+                <div>
+                    <h2>Student Registration</h2>
+                    <p>Fill in the details to register a new student</p>
+                </div>
+            </div>
+
+            <form id="register-form" class="form-card">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="reg-student-id">Student ID</label>
+                        <input type="text" id="reg-student-id" placeholder="e.g., 2024-0001" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-full-name">Full Name</label>
+                        <input type="text" id="reg-full-name" placeholder="e.g., Juan Dela Cruz" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-course">Course</label>
+                        <select id="reg-course" required>
+                            <option value="">Select a course</option>
+                            <option value="BS Computer Science">BS Computer Science</option>
+                            <option value="BS Information Technology">BS Information Technology</option>
+                            <option value="BS Information Systems">BS Information Systems</option>
+                            <option value="BS Computer Engineering">BS Computer Engineering</option>
+                            <option value="BS Data Science">BS Data Science</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-year-level">Year Level</label>
+                        <select id="reg-year-level" required>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="reg-email">Email Address</label>
+                    <input type="email" id="reg-email" placeholder="e.g., juan@university.edu" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="resetForm('register-form')">🔄 Reset</button>
+                    <button type="submit" class="btn btn-primary">💾 Register Student</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Students List Page -->
+        <section id="students-page" class="page">
+            <div class="page-header">
+                <div class="page-icon blue">👥</div>
+                <div>
+                    <h2>Student Records</h2>
+                    <p><span id="student-count">0</span> students found</p>
+                </div>
+                <button class="btn btn-primary" onclick="navigateTo('register')">➕ Add Student</button>
+            </div>
+
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search-input" placeholder="Search by ID, name, course, or email..." oninput="searchStudents()">
+                <button class="clear-search" onclick="clearSearch()">✕</button>
+            </div>
+
+            <div class="table-container">
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Full Name</th>
+                            <th>Course</th>
+                            <th>Year</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="students-tbody"></tbody>
+                </table>
+            </div>
+
+            <div id="empty-state" class="empty-state hidden">
+                <div class="empty-icon">👥</div>
+                <h3>No students found</h3>
+                <p>Get started by registering your first student.</p>
+                <button class="btn btn-primary" onclick="navigateTo('register')">➕ Register Student</button>
+            </div>
+        </section>
+
+        <!-- Edit Page -->
+        <section id="edit-page" class="page">
+            <div class="page-header">
+                <button class="btn btn-icon" onclick="navigateTo('students')">← Back</button>
+                <div class="page-icon amber">✏️</div>
+                <div>
+                    <h2>Edit Student</h2>
+                    <p>Update the student information below</p>
+                </div>
+            </div>
+
+            <form id="edit-form" class="form-card">
+                <input type="hidden" id="edit-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="edit-student-id">Student ID</label>
+                        <input type="text" id="edit-student-id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-full-name">Full Name</label>
+                        <input type="text" id="edit-full-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-course">Course</label>
+                        <select id="edit-course" required>
+                            <option value="">Select a course</option>
+                            <option value="BS Computer Science">BS Computer Science</option>
+                            <option value="BS Information Technology">BS Information Technology</option>
+                            <option value="BS Information Systems">BS Information Systems</option>
+                            <option value="BS Computer Engineering">BS Computer Engineering</option>
+                            <option value="BS Data Science">BS Data Science</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-year-level">Year Level</label>
+                        <select id="edit-year-level" required>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="edit-email">Email Address</label>
+                    <input type="email" id="edit-email" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="navigateTo('students')">Cancel</button>
+                    <button type="submit" class="btn btn-warning">💾 Update Student</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <span id="toast-icon"></span>
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-icon">⚠️</div>
+            <h3>Delete Student</h3>
+            <p>Are you sure you want to permanently delete this student record? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn btn-danger" id="confirm-delete-btn">🗑️ Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
